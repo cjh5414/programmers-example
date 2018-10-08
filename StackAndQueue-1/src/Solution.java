@@ -5,18 +5,15 @@ import java.util.Stack;
  */
 public class Solution {
     public int solution(String arrangement) {
-        Stack<Character> s = new Stack<>();
-        char pre = 0;
+        Stack<Integer> s = new Stack<>();
         int count = 0;
 
-        for (char c : arrangement.toCharArray()) {
-            if (c == '(') s.push(c);
+        for (int i = 0; i < arrangement.length(); i++) {
+            if (arrangement.charAt(i) == '(') s.push(i);
             else {
-                s.pop();
-                if (pre == '(') count += s.size();
+                if (s.pop() + 1 == i) count += s.size();
                 else count += 1;
             }
-            pre = c;
         }
         return count;
     }
