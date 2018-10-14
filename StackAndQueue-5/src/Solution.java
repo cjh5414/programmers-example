@@ -4,28 +4,24 @@
 
 class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
-        int[] answer = new int[progresses.length];
+        int[] answer = new int[100];
         int days = 0;
-        int count = 1;
-        int idx = 0;
+        int count = 0;
 
-        while (progresses[0] + speeds[0] * days < 100) days++;
-        for (int i = 1; i < progresses.length; i++) {
-            if (progresses[i] + speeds[i] * days < 100) {
-                answer[idx++] = count;
-                count = 1;
-                if (i == progresses.length - 1) answer[idx] = 1;
-                while (progresses[i] + speeds[i] * days < 100) days++;
-            }
-
-            else {
-                count++;
-                if (i == progresses.length - 1) answer[idx] = count;
-            }
+        for (int i = 0; i < progresses.length; i++) {
+            while (progresses[i] + days * speeds[i] < 100)
+                days++;
+            if (answer[days] == 0) count++;
+            answer[days]++;
         }
 
-        int[] ret = new int[idx + 1];
-        System.arraycopy(answer, 0, ret, 0, idx + 1);
+        int[] ret = new int[count];
+        int idx = 0;
+        for (int i = 0; i < 100; i++) {
+            if (answer[i] != 0)
+                ret[idx++] = answer[i];
+        }
+
         return ret;
     }
 }
