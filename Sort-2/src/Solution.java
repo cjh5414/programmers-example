@@ -16,7 +16,11 @@ class Solution {
             sb.append(str);
 
         String answer = sb.toString();
-        if (Integer.parseInt(answer) == 0) return "0";
-        else return answer;
+        try {
+            if (Integer.parseInt(answer) == 0) return "0";
+        } catch(NumberFormatException e) {
+        }
+
+        return answer;
     }
 }
