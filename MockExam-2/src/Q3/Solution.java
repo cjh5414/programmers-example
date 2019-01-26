@@ -1,35 +1,27 @@
 package Q3;
 
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.HashSet;
 
 class Solution {
     public int solution(int[][] board, int[] nums) {
         int n = board.length;
-        HashMap map = new HashMap<Integer, Position>();
-
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                map.put(board[i][j], new Position(i, j));
-            }
-        }
-
-        for (int val : nums) {
-            Position p = (Position)map.get(val);
-            board[p.x][p.y] = 0;
-        }
+        HashSet set = new HashSet(Arrays.asList(nums));
 
         int answer = 0;
         boolean rowBingo, colBingo;
+        boolean bingo1 = true, bingo2 = true;
 
         for (int i = 0; i < n; i++) {
-            rowBingo = true;
-            colBingo = true;
-            for (int j = 0; j < n; j++) {
-                if (board[i][j] != 0) {
-                    rowBingo = false;
-                }
+            if (!set.contains(board[i][i])) bingo1 = false;
+            if (!set.contains(board[i][n - i - 1])) bingo2 = false;
 
-                if (board[j][i] != 0) {
+            rowBingo = colBingo = true;
+            for (int j = 0; j < n; j++) {
+                if (!set.contains(board[i][j]))
+                    rowBingo = false;
+
+                if (!set.contains(board[j][i])) {
                     colBingo = false;
                     if (!rowBingo) break;
                 }
@@ -39,31 +31,9 @@ class Solution {
             if (colBingo) answer++;
         }
 
-        boolean bingo1 = true;
-        boolean bingo2 = true;
-        for (int i = 0; i < n; i++) {
-            if (board[i][i] != 0) {
-                bingo1 = false;
-            }
-            if (board[i][n - i - 1] != 0) {
-                bingo2 = false;
-                if (!bingo1) break;
-            }
-        }
-
         if (bingo1) answer++;
         if (bingo2) answer++;
 
         return answer;
-    }
-
-    class Position {
-        int x;
-        int y;
-
-        public Position(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
     }
 }
